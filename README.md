@@ -89,17 +89,22 @@ The generator currently replaces `{{PROJECT_NAME}}` in supported file types such
 ## Requirements
 
 - Python 3.10 or newer
-- No third-party dependencies are currently required
+- colorama version 0.4.6 or newer
 
 ## Roadmap
 
-- Finish the Telegram bot template
-- Add the KivyMD template
-- Create virtual environments automatically
-- Initialise Git repositories
+- Initialize Git repositories
 - Add optional GitHub repository creation
-- Improve command-line validation and error handling
+
+## Report Issue
+
+Report [Issue](https://github.com/UrrovenGrrunta/pyproj/issues)
 
 ## Author
 
 Created by [UrrovenGrrunta](https://github.com/UrrovenGrrunta).
+
+## Contact me
+Contact me in [Discord](https://discordapp.com/users/492016021545287690)
+
+Contact me in [Telegram](https://t.me/@uRR0vengRRunta).
