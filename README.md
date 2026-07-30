@@ -1,22 +1,28 @@
-# pyproj
+pyproj
 
-`pyproj` is a small command-line project generator written in Python.
+pyproj is a small command-line project generator written in Python.
 
-It creates a new project directory, copies a selected template, and replaces template placeholders such as `{{PROJECT_NAME}}` with the actual project name.
+It creates a new project directory, copies a selected template, replaces template placeholders such as {{PROJECT_NAME}}, creates a virtual environment, and installs template dependencies when a requirements.txt file is present.
 
-> **Status:** Alpha. The project is still in development, and some flags and templates are not implemented yet.
+> **Status:** Alpha. The project is still in development, and GitHub repository creation is not implemented yet.
 
-## Current features
+Current features
 
-- Create a project in the default Python projects directory
-- Copy files from a project template
-- Use the `basic` template by default
-- Replace `{{PROJECT_NAME}}` inside supported text files
-- Parse short and long command-line flags
-- Detect unknown flags
-- Prevent overwriting an existing project directory
+• Create a project in the default Python projects directory
+• Copy files from a selected project template
+• Use the basic template by default
+• Support basic, telegram, and kivymd templates
+• Replace {{PROJECT_NAME}} inside supported text files
+• Create a .venv virtual environment
+• Install dependencies from requirements.txt
+• Parse short and long command-line flags
+• Detect unknown flags
+• Prevent conflicting template flags
+• Prevent overwriting an existing project directory
+• Show coloured progress, success, warning, and error messages
+• Hide unnecessary tracebacks for expected user errors
 
-## Usage
+Usage
 
 Run the generator with a project name:
 
@@ -24,9 +30,9 @@ Run the generator with a project name:
 python main.py my_project
 ```
 
-The project will be created using the `basic` template.
+The project will be created using the basic template.
 
-Planned template flags:
+Use a different template:
 
 ```bash
 python main.py my_bot --telegram
@@ -40,19 +46,19 @@ python main.py my_bot -tg
 python main.py my_app -kv
 ```
 
-## Available flags
+Available flags
 
-| Short | Long | Purpose |
-|---|---|---|
-| `-tg` | `--telegram` | Use the Telegram bot template |
-| `-kv` | `--kivy` | Use the KivyMD template |
-| `-gh` | `--github` | Create a GitHub repository |
-| `-pb` | `--public` | Set GitHub repository visibility to public |
-| `-pv` | `--private` | Set GitHub repository visibility to private |
+|Short|Long        |Purpose                                                |
+|-----|------------|-------------------------------------------------------|
+|`-tg`|`--telegram`|Use the Telegram bot template                          |
+|`-kv`|`--kivy`    |Use the KivyMD template                                |
+|`-gh`|`--github`  |Create a GitHub repository *(planned)*                 |
+|`-pb`|`--public`  |Set GitHub repository visibility to public *(planned)* |
+|`-pv`|`--private` |Set GitHub repository visibility to private *(planned)*|
 
-Telegram, KivyMD, and GitHub functionality are currently being developed.
+Telegram and KivyMD templates are available. GitHub repository creation and visibility flags are still being developed.
 
-## Project structure
+Project structure
 
 ```text
 pyproj/
@@ -60,16 +66,14 @@ pyproj/
 ├── core/
 │   ├── parser.py
 │   ├── project.py
-│   ├── github.py
-│   ├── templates.py
-│   └── cli.py
+│   └── logger.py
 └── templates/
     ├── basic/
     ├── telegram/
     └── kivymd/
 ```
 
-## How generation works
+How generation works
 
 ```text
 create_directory()
@@ -77,34 +81,42 @@ create_directory()
 copy_template()
         ↓
 replace_placeholders()
+        ↓
+create_venv()
+        ↓
+install_dependencies()
 ```
 
-The generator currently replaces `{{PROJECT_NAME}}` in supported file types such as:
+The generator replaces {{PROJECT_NAME}} in supported file types:
 
-- `.py`
-- `.txt`
-- `.md`
-- `.kv`
+• .py
+• .txt
+• .md
+• .kv
 
-## Requirements
+If the selected template contains a requirements.txt file, its dependencies are installed inside the newly created virtual environment.
 
-- Python 3.10 or newer
-- colorama version 0.4.6 or newer
+Requirements
 
-## Roadmap
+• Python 3.10 or newer
+• colorama 0.4.6 or newer
 
-- Initialize Git repositories
-- Add optional GitHub repository creation
+Roadmap
 
-## Report Issue
+• Initialize local Git repositories
+• Add optional GitHub repository creation
+• Support public and private GitHub repository visibility
 
-Report [Issue](https://github.com/UrrovenGrrunta/pyproj/issues)
+Report an issue
 
-## Author
+Report an issue.
 
-Created by [UrrovenGrrunta](https://github.com/UrrovenGrrunta).
+Author
 
-## Contact me
-Contact me in [Discord](https://discordapp.com/users/492016021545287690)
+Created by UrrovenGrrunta.
 
-Contact me in [Telegram](https://t.me/@uRR0vengRRunta).
+Contact me
+
+Contact me on Discord.
+
+Contact me on Telegram.
