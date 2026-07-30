@@ -1,1 +1,4 @@
 ## Requirements for {{PROJECT_NAME}}
+
+aiogram>=3.0
+python-dotenv>=1.0

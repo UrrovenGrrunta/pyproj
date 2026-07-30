@@ -1,1 +1,4 @@
 ## Requirements for {{PROJECT_NAME}}
+
+kivy>=2.3.1
+kivymd>=1.2.0

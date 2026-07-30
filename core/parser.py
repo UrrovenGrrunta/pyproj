@@ -8,8 +8,8 @@ def parse_flags():
         "-tg": "telegram",
         "--telegram": "telegram",
 
-        "-kv": "kivy",
-        "--kivy": "kivy",
+        "-kv": "kivymd",
+        "--kivy": "kivymd",
 
         "-gh": "github",
         "--github": "github",
@@ -25,5 +25,8 @@ def parse_flags():
         if flag in allowed_flags:
             options.append(allowed_flags[flag])
         else:
-            print(f"Error, unknown flag {flag}")
+            raise ValueError(
+                f"Error unknown flag '{flag}'."
+                f"\nAllowed flags are {allowed_flags.keys()}"
+                )
     return project_name, options
