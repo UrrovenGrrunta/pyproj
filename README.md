@@ -109,7 +109,7 @@ Roadmap
 
 Report an issue
 
-Report an issue.
+[Report an issue](https://github.com/UrrovenGrrunta/pyproj/issues/new).
 
 Author
 
@@ -117,6 +117,6 @@ Created by UrrovenGrrunta.
 
 Contact me
 
-Contact me on Discord.
+[Contact me on Discord](https://discordapp.com/users/492016021545287690).
 
-Contact me on Telegram.
+[Contact me on Telegram](https://t.me/uRR0vengRRunta).
