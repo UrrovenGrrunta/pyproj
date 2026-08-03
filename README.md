@@ -9,17 +9,29 @@ It creates a new project directory, copies a selected template, replaces templat
 ## Current features
 
 • Create a project in the default Python projects directory
+
 • Copy files from a selected project template
+
 • Use the basic template by default
+
 • Support basic, telegram, and kivymd templates
+
 • Replace {{PROJECT_NAME}} inside supported text files
+
 • Create a .venv virtual environment
+
 • Install dependencies from requirements.txt
+
 • Parse short and long command-line flags
+
 • Detect unknown flags
+
 • Prevent conflicting template flags
+
 • Prevent overwriting an existing project directory
+
 • Show coloured progress, success, warning, and error messages
+
 • Hide unnecessary tracebacks for expected user errors
 
 ## Usage
@@ -104,7 +116,9 @@ If the selected template contains a requirements.txt file, its dependencies are 
 ## Roadmap
 
 • Initialize local Git repositories
+
 • Add optional GitHub repository creation
+
 • Support public and private GitHub repository visibility
 
 ## Report an issue
