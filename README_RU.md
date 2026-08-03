@@ -109,7 +109,7 @@ install_dependencies()
 
 Сообщить об ошибке
 
-Сообщить об ошибке.
+[Сообщить об ошибке](https://github.com/UrrovenGrrunta/pyproj/issues/new).
 
 Автор
 
@@ -117,6 +117,6 @@ install_dependencies()
 
 Связаться со мной
 
-Связаться со мной в Discord.
+[Связаться со мной в Discord](https://discordapp.com/users/492016021545287690).
 
-Связаться со мной в Telegram.
+[Связаться со мной в Telegram](https://t.me/uRR0vengRRunta).
