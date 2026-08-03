@@ -1,4 +1,4 @@
-pyproj
+# pyproj
 
 pyproj is a small command-line project generator written in Python.
 
@@ -6,7 +6,7 @@ It creates a new project directory, copies a selected template, replaces templat
 
 > **Status:** Alpha. The project is still in development, and GitHub repository creation is not implemented yet.
 
-Current features
+## Current features
 
 • Create a project in the default Python projects directory
 • Copy files from a selected project template
@@ -22,7 +22,7 @@ Current features
 • Show coloured progress, success, warning, and error messages
 • Hide unnecessary tracebacks for expected user errors
 
-Usage
+## Usage
 
 Run the generator with a project name:
 
@@ -46,7 +46,7 @@ python main.py my_bot -tg
 python main.py my_app -kv
 ```
 
-Available flags
+## Available flags
 
 |Short|Long        |Purpose                                                |
 |-----|------------|-------------------------------------------------------|
@@ -58,7 +58,7 @@ Available flags
 
 Telegram and KivyMD templates are available. GitHub repository creation and visibility flags are still being developed.
 
-Project structure
+## Project structure
 
 ```text
 pyproj/
@@ -73,7 +73,7 @@ pyproj/
     └── kivymd/
 ```
 
-How generation works
+## How generation works
 
 ```text
 create_directory()
@@ -96,26 +96,26 @@ The generator replaces {{PROJECT_NAME}} in supported file types:
 
 If the selected template contains a requirements.txt file, its dependencies are installed inside the newly created virtual environment.
 
-Requirements
+## Requirements
 
 • Python 3.10 or newer
 • colorama 0.4.6 or newer
 
-Roadmap
+## Roadmap
 
 • Initialize local Git repositories
 • Add optional GitHub repository creation
 • Support public and private GitHub repository visibility
 
-Report an issue
+## Report an issue
 
 [Report an issue](https://github.com/UrrovenGrrunta/pyproj/issues/new).
 
-Author
+## Author
 
 Created by UrrovenGrrunta.
 
-Contact me
+## Contact me
 
 [Contact me on Discord](https://discordapp.com/users/492016021545287690).
 
