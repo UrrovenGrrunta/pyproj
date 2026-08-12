@@ -13,21 +13,19 @@ TEMPLATE_DIRECTORY = Path(
 DEFAULT_TEMPLATE = "basic"
 SUPPORTED_EXTENSIONS = (".py", ".txt", ".md", ".kv")
 
+project_exists = False
 
 def create_directory(project_name: str) -> Path:
     project_path = DEFAULT_DIRECTORY / project_name
 
-    logger.info(f"Creating project directory: {project_path}")
-
     try:
+        logger.info(f"Creating project directory: {project_path}")
         project_path.mkdir()
-    except FileExistsError as error:
+        logger.success("Project directory created.")
+    except FileExistsError:
+        project_exists = True
         logger.error(f"Project '{project_name}' already exists.")
-        raise FileExistsError(
-            f"Project '{project_name}' already exists."
-        ) from error
-
-    logger.success("Project directory created.")
+        open_project(project_path)
     return project_path
 
 
@@ -58,6 +56,7 @@ def copy_template(project_path: Path, template: str) -> None:
         f"No template '{template}' found.\n"
         f"Available templates: {existing_templates}"
     )
+
 
 
 def replace_placeholders(
@@ -126,6 +125,18 @@ def install_dependencies(project_path: Path) -> None:
     logger.success("Dependencies installed.")
 
 
+def open_in_code(project_path: Path) -> None:
+    subprocess.Popen(
+    ["code", str(project_path)],
+    stdout=subprocess.DEVNULL,
+    stderr=subprocess.DEVNULL,
+)
+
+
+def open_project(project_path: Path) -> None:
+    subprocess.run(["cd", project_path], cwd=project_path, check=True)
+
+
 def generate_project(
     project_name: str,
     template: str = DEFAULT_TEMPLATE,
@@ -133,9 +144,14 @@ def generate_project(
     logger.info(f"Generating project '{project_name}'...")
 
     project_path = create_directory(project_name)
-    copy_template(project_path, template)
-    replace_placeholders(project_path, project_name)
-    create_venv(project_path)
-    install_dependencies(project_path)
-
+    if not project_exists:
+        copy_template(project_path, template)
+        replace_placeholders(project_path, project_name)
+        install_dependencies(project_path)
+        create_venv(project_path)
+        open_in_code(project_path)
+    else:
+        create_venv(project_path)
+        open_in_code(project_path)
     logger.success(f"Project created successfully: {project_path}")
+
