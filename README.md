@@ -1,5 +1,7 @@
 # pyproj
 
+**Project status: Active**
+
 pyproj is a small command-line project generator written in Python.
 
 It creates a new project directory, copies a selected template, replaces template placeholders such as {{PROJECT_NAME}}, creates a virtual environment, and installs template dependencies when a requirements.txt file is present.
