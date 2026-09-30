@@ -4,21 +4,28 @@ import os
 
 from pathlib import Path
 
-from . import logger
+from pyproj import logger
+from pyproj import github
 
-
+# Default location where generated projects are created.
 DEFAULT_DIRECTORY = Path("/home/urrovengrrunta/coding/Python/")
+
+# Directory containing all available project templates.
 TEMPLATE_DIRECTORY = Path(
     "/home/urrovengrrunta/coding/Python/pyproj/templates"
 )
+
 DEFAULT_TEMPLATE = "basic"
+
+# Only files with these extensions are searched for template placeholders.
 SUPPORTED_EXTENSIONS = (".py", ".txt", ".md", ".kv", ".toml")
 
+# Tracks whether the requested project directory already exists.
+# Used by generate_project() to avoid overwriting an existing project.
 project_exists = False
 
 
 def create_directory(project_name: str) -> Path:
-    global project_exists
 
     project_path = DEFAULT_DIRECTORY / project_name
 
@@ -27,13 +34,15 @@ def create_directory(project_name: str) -> Path:
         project_path.mkdir()
         logger.success("Project directory created.")
     except FileExistsError:
-        project_exists = True
         logger.error(f"Project '{project_name}' already exists.")
-        open_project(project_path)
+        raise
+        
+
     return project_path
 
 
 def copy_template(project_path: Path, template: str) -> None:
+    # Fall back to the basic template when no template is specified.
     if template == "":
         template = DEFAULT_TEMPLATE
 
@@ -41,6 +50,7 @@ def copy_template(project_path: Path, template: str) -> None:
     logger.info(f"Copying '{template}' template...")
 
     if template_path.is_dir():
+        # Copy the selected template into the newly created project directory.
         shutil.copytree(
             template_path,
             project_path,
@@ -49,6 +59,7 @@ def copy_template(project_path: Path, template: str) -> None:
         logger.success("Template copied.")
         return
 
+    # Build a list of valid templates for a more useful error message.
     existing_templates = []
 
     for template_directory in TEMPLATE_DIRECTORY.iterdir():
@@ -68,6 +79,8 @@ def replace_placeholders(
 ) -> None:
     logger.info("Replacing template placeholders...")
 
+    # Search template files recursively and replace placeholders such as
+    # {{PROJECT_NAME}} with values belonging to the generated project.
     for file_path in project_path.rglob("*"):
         if (
             file_path.is_file()
@@ -90,6 +103,7 @@ def replace_placeholders(
 def sync_project(project_path: Path) -> None:
     pyproject_path = project_path / "pyproject.toml"
 
+    # uv cannot sync a project without its pyproject.toml.
     if not pyproject_path.is_file():
         logger.warning(
             "pyproject.toml was not found. "
@@ -98,28 +112,37 @@ def sync_project(project_path: Path) -> None:
         return
 
     logger.info("Syncing project environment with uv...")
+
+    # pyproj itself may be running inside a virtual environment.
+    # Remove VIRTUAL_ENV so the generated project gets its own .venv
+    # instead of inheriting pyproj's environment.
     env = os.environ.copy()
     env.pop("VIRTUAL_ENV", None)
+
     subprocess.run(
         ["uv", "sync"],
         cwd=project_path,
         env=env,
         check=True,
     )
-
     logger.success("Project environment synced.")
 
 
+def init_git_repo(project_path: Path) -> None:
+    github.init_git(project_path)
+    github.git_add(project_path)
+    github.git_initial_commit(project_path)
+    logger.success("Local Git repository initialized and commited")
+
+
+
 def open_in_code(project_path: Path) -> None:
+    # Open the generated project in VS Code without blocking pyproj.
     subprocess.Popen(
         ["code", str(project_path)],
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL,
     )
-
-
-def open_project(project_path: Path) -> None:
-    subprocess.run(["cd", project_path], cwd=project_path, check=True)
 
 
 def generate_project(
@@ -129,12 +152,10 @@ def generate_project(
     logger.info(f"Generating project '{project_name}'...")
 
     project_path = create_directory(project_name)
-    if not project_exists:
-        copy_template(project_path, template)
-        replace_placeholders(project_path, project_name)
-        sync_project(project_path)
-        open_in_code(project_path)
-    else:
-        sync_project(project_path)
-        open_in_code(project_path)
+    copy_template(project_path, template)
+    replace_placeholders(project_path, project_name)
+    sync_project(project_path)
+    init_git_repo(project_path)
+    open_in_code(project_path)
+
     logger.success(f"Project created successfully: {project_path}")

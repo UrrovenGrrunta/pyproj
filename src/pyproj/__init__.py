@@ -20,3 +20,4 @@ def main():
         project.generate_project(project_name, template)
     except (ValueError, FileExistsError, FileNotFoundError, CalledProcessError) as error:
         logger.error(str(error))
+

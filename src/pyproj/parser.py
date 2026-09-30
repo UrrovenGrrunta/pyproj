@@ -17,8 +17,6 @@ def parse_flags():
         "-pb": "visibility: public",
         "--public": "visibility: public",
 
-        "-pv": "visibility: private",
-        "--private": "visibility: private",
     }
 
     for flag in project_flags:
