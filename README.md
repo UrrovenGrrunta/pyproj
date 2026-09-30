@@ -1,12 +1,12 @@
 # pyproj
 
-**Project status: Active**
+**Project status: Done as for version 2.0**
 
 pyproj is a small command-line project generator written in Python and managed with [uv](https://docs.astral.sh/uv/).
 
 It creates a new project directory, copies a selected template, replaces template placeholders such as `{{PROJECT_NAME}}`, and runs `uv sync` to create the virtual environment and install the template dependencies.
 
-> **Status:** Alpha. The project is still in development, and GitHub repository creation is not implemented yet.
+> **Status:** Alpha. The project is still in development.
 
 ## Current features
 
