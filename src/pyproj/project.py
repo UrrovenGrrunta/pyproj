@@ -1,5 +1,6 @@
 import shutil
 import subprocess
+import os
 
 from pathlib import Path
 
@@ -97,10 +98,12 @@ def sync_project(project_path: Path) -> None:
         return
 
     logger.info("Syncing project environment with uv...")
-
+    env = os.environ.copy()
+    env.pop("VIRTUAL_ENV", None)
     subprocess.run(
         ["uv", "sync"],
         cwd=project_path,
+        env=env,
         check=True,
     )
 

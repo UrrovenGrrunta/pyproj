@@ -1,8 +1,9 @@
-import core.project as project
-import core.parser as parser
-import core.logger as logger
+from pyproj import project
+from pyproj import parser
+from pyproj import logger
 
 from subprocess import CalledProcessError
+
 
 def main():
     try:
@@ -19,6 +20,3 @@ def main():
         project.generate_project(project_name, template)
     except (ValueError, FileExistsError, FileNotFoundError, CalledProcessError) as error:
         logger.error(str(error))
-
-if __name__ == "__main__":
-    main()
