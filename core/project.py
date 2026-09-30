@@ -11,11 +11,14 @@ TEMPLATE_DIRECTORY = Path(
     "/home/urrovengrrunta/coding/Python/pyproj/templates"
 )
 DEFAULT_TEMPLATE = "basic"
-SUPPORTED_EXTENSIONS = (".py", ".txt", ".md", ".kv")
+SUPPORTED_EXTENSIONS = (".py", ".txt", ".md", ".kv", ".toml")
 
 project_exists = False
 
+
 def create_directory(project_name: str) -> Path:
+    global project_exists
+
     project_path = DEFAULT_DIRECTORY / project_name
 
     try:
@@ -58,7 +61,6 @@ def copy_template(project_path: Path, template: str) -> None:
     )
 
 
-
 def replace_placeholders(
     project_path: Path,
     project_name: str,
@@ -84,53 +86,33 @@ def replace_placeholders(
     logger.success("Template placeholders replaced.")
 
 
-def create_venv(project_path: Path) -> None:
-    logger.info("Creating virtual environment...")
+def sync_project(project_path: Path) -> None:
+    pyproject_path = project_path / "pyproject.toml"
 
-    subprocess.run(
-        ["python3", "-m", "venv", ".venv"],
-        cwd=project_path,
-        check=True,
-    )
-
-    logger.success("Virtual environment created.")
-
-
-def install_dependencies(project_path: Path) -> None:
-    venv_python_path = project_path / ".venv/bin/python"
-    requirements_path = project_path / "requirements.txt"
-
-    if not requirements_path.is_file():
+    if not pyproject_path.is_file():
         logger.warning(
-            "requirements.txt was not found. "
-            "Dependency installation skipped."
+            "pyproject.toml was not found. "
+            "Environment setup skipped."
         )
         return
 
-    logger.info("Installing dependencies...")
+    logger.info("Syncing project environment with uv...")
 
     subprocess.run(
-        [
-            str(venv_python_path),
-            "-m",
-            "pip",
-            "install",
-            "-r",
-            str(requirements_path),
-        ],
+        ["uv", "sync"],
         cwd=project_path,
         check=True,
     )
 
-    logger.success("Dependencies installed.")
+    logger.success("Project environment synced.")
 
 
 def open_in_code(project_path: Path) -> None:
     subprocess.Popen(
-    ["code", str(project_path)],
-    stdout=subprocess.DEVNULL,
-    stderr=subprocess.DEVNULL,
-)
+        ["code", str(project_path)],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
 
 
 def open_project(project_path: Path) -> None:
@@ -147,11 +129,9 @@ def generate_project(
     if not project_exists:
         copy_template(project_path, template)
         replace_placeholders(project_path, project_name)
-        install_dependencies(project_path)
-        create_venv(project_path)
+        sync_project(project_path)
         open_in_code(project_path)
     else:
-        create_venv(project_path)
+        sync_project(project_path)
         open_in_code(project_path)
     logger.success(f"Project created successfully: {project_path}")
-

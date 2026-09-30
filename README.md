@@ -2,9 +2,9 @@
 
 **Project status: Active**
 
-pyproj is a small command-line project generator written in Python.
+pyproj is a small command-line project generator written in Python and managed with [uv](https://docs.astral.sh/uv/).
 
-It creates a new project directory, copies a selected template, replaces template placeholders such as {{PROJECT_NAME}}, creates a virtual environment, and installs template dependencies when a requirements.txt file is present.
+It creates a new project directory, copies a selected template, replaces template placeholders such as `{{PROJECT_NAME}}`, and runs `uv sync` to create the virtual environment and install the template dependencies.
 
 > **Status:** Alpha. The project is still in development, and GitHub repository creation is not implemented yet.
 
@@ -18,11 +18,9 @@ It creates a new project directory, copies a selected template, replaces templat
 
 • Support basic, telegram, and kivymd templates
 
-• Replace {{PROJECT_NAME}} inside supported text files
+• Replace `{{PROJECT_NAME}}` inside supported text files
 
-• Create a .venv virtual environment
-
-• Install dependencies from requirements.txt
+• Manage generated project environments and dependencies with uv
 
 • Parse short and long command-line flags
 
@@ -36,28 +34,34 @@ It creates a new project directory, copies a selected template, replaces templat
 
 • Hide unnecessary tracebacks for expected user errors
 
+## Setup
+
+Install uv, then sync the repository:
+
+```bash
+uv sync
+```
+
 ## Usage
 
 Run the generator with a project name:
 
 ```bash
-python main.py my_project
+uv run python main.py my_project
 ```
-
-The project will be created using the basic template.
 
 Use a different template:
 
 ```bash
-python main.py my_bot --telegram
-python main.py my_app --kivy
+uv run python main.py my_bot --telegram
+uv run python main.py my_app --kivy
 ```
 
 Short versions:
 
 ```bash
-python main.py my_bot -tg
-python main.py my_app -kv
+uv run python main.py my_bot -tg
+uv run python main.py my_app -kv
 ```
 
 ## Available flags
@@ -70,12 +74,11 @@ python main.py my_app -kv
 |`-pb`|`--public`  |Set GitHub repository visibility to public *(planned)* |
 |`-pv`|`--private` |Set GitHub repository visibility to private *(planned)*|
 
-Telegram and KivyMD templates are available. GitHub repository creation and visibility flags are still being developed.
-
 ## Project structure
 
 ```text
 pyproj/
+├── pyproject.toml
 ├── main.py
 ├── core/
 │   ├── parser.py
@@ -96,24 +99,16 @@ copy_template()
         ↓
 replace_placeholders()
         ↓
-create_venv()
-        ↓
-install_dependencies()
+uv sync
 ```
 
-The generator replaces {{PROJECT_NAME}} in supported file types:
-
-• .py
-• .txt
-• .md
-• .kv
-
-If the selected template contains a requirements.txt file, its dependencies are installed inside the newly created virtual environment.
+Each template contains its own `pyproject.toml`. After the template is copied and placeholders are replaced, `uv sync` creates `.venv` and installs the declared dependencies.
 
 ## Requirements
 
 • Python 3.10 or newer
-• colorama 0.4.6 or newer
+
+• uv
 
 ## Roadmap
 
